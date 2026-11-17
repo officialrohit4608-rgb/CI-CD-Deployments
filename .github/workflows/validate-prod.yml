@@ -1,0 +1,33 @@
+# Runs on every Pull Request into main.
+# Checks that the change WOULD deploy to the PROD org and that all tests pass,
+# without actually changing anything (--dry-run).
+name: Validate against PROD
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Log in to PROD org
+        run: |
+          echo "${{ secrets.TARGET_AUTH_URL }}" > auth.txt
+          sf org login sfdx-url --sfdx-url-file auth.txt --alias prod
+          rm auth.txt
+
+      - name: Validate deployment + run Apex tests (no changes made)
+        run: |
+          sf project deploy start \
+            --source-dir force-app \
+            --target-org prod \
+            --dry-run \
+            --test-level RunLocalTests \
+            --wait 30
