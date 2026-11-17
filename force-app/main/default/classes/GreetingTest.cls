@@ -2,6 +2,6 @@
 private class GreetingTest {
     @IsTest
     static void testSayHello() {
-        System.assertEquals('Hello, Rohit', Greeting.sayHello('Rohit'));
+        System.assertEquals('Hello, WRONG', Greeting.sayHello('Rohit'));
     }
 }
