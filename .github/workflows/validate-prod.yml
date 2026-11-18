@@ -17,11 +17,17 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli
 
-      - name: Log in to PROD org
+            - name: Log in to Target org (JWT)
         run: |
-          echo "${{ secrets.TARGET_AUTH_URL }}" > auth.txt
-          sf org login sfdx-url --sfdx-url-file auth.txt --alias prod
-          rm auth.txt
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          sf org login jwt \
+            --client-id "${{ secrets.SF_CONSUMER_KEY }}" \
+            --jwt-key-file server.key \
+            --username "${{ secrets.SF_USERNAME }}" \
+            --instance-url https://login.salesforce.com \
+            --alias prod
+          rm server.key
+
 
       - name: Validate deployment + run Apex tests (no changes made)
         run: |
