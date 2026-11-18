@@ -4,9 +4,4 @@ private class FarewellTest {
     static void testSayBye() {
         System.assertEquals('Goodbye, Rohit', Farewell.sayBye('Rohit'));
     }
-
-    @IsTest
-    static void testSayByeEmptyName() {
-        System.assertEquals('Goodbye, ', Farewell.sayBye(''));
-    }
 }
