@@ -17,7 +17,7 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli
 
-            - name: Log in to Target org (JWT)
+      - name: Log in to Target org (JWT)
         run: |
           echo "${{ secrets.SF_JWT_KEY }}" > server.key
           sf org login jwt \
